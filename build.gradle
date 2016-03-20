@@ -9,6 +9,14 @@ repositories {
     mavenCentral()
 }
 
+compileJava {
+    //enable compilation in a separate daemon process
+    options.fork = true
+
+    //enable incremental compilation
+    options.incremental = true
+}
+
 dependencies {
     compile 'com.github.javaparser:javaparser-core:2.3.0'
     compile 'org.jetbrains:annotations:15.0'
