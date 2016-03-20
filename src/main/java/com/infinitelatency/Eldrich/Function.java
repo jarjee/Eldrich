@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 class Function {
-    protected final String name;
-    protected final List<Class<?>> argTypes;
+    private final String name;
+    private final List<Class<?>> argTypes;
     private Function(@NotNull String name, @NotNull Class<?>... argTypes){
         this.name = name;
         this.argTypes = Arrays.asList(argTypes);
@@ -18,12 +18,20 @@ class Function {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof Function && this.name.equals(((Function) o).name) && this.argTypes.equals(((Function) o).argTypes);
+    final public boolean equals(Object o) {
+        if (o instanceof  Function){
+            boolean name = this.name == null ? ((Function) o).name == null : this.name.equals(((Function) o).name);
+            boolean argTypes = this.argTypes == null ? ((Function) o).argTypes == null : this.argTypes.equals(((Function) o).argTypes);
+            return name && argTypes;
+        }
+        return false;
     }
 
     @Override
-    public int hashCode(){
-        return name.hashCode() ^ argTypes.hashCode();
+    final public int hashCode(){
+        int nameHash = name == null ? 0 : name.hashCode();
+        int argHash = argTypes == null ? 0 : argTypes.hashCode();
+
+        return nameHash ^ argHash;
     }
 }
