@@ -1,4 +1,4 @@
-package com.infinitelatency.Eldrich.Mangle.Text;
+package com.infinitelatency.Eldrich.Mangle;
 
 import com.github.rodionmoiseev.c10n.annotations.En;
 

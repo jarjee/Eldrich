@@ -10,7 +10,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.rodionmoiseev.c10n.C10N;
-import com.infinitelatency.Eldrich.Mangle.Text.MangleParserMsg;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +45,6 @@ public class MangleParser {
                 if (e1.getMessage().contains("package")){
                     throw new MangleException(msg.noPackages());
                 }
-
             }
         }
     }
