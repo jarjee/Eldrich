@@ -1,6 +1,8 @@
 package com.infinitelatency.Eldrich.Mangle;
 
 import com.github.javaparser.ParseException;
+import com.github.rodionmoiseev.c10n.C10N;
+import com.infinitelatency.Eldrich.Mangle.Text.MangleParserMsg;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +27,8 @@ public class MangleParserTests {
         } catch (ParseException e) {
             fail("We should only see a MangleException");
         } catch (MangleException e) {
-            assertEquals(e.getMessage(), MangleParser.PACKAGE_ERR);
+            MangleParserMsg msg = C10N.get(MangleParserMsg.class);
+            assertEquals(e.getMessage(), msg.noPackages());
         }
     }
 
@@ -48,5 +51,15 @@ public class MangleParserTests {
 
         MangleParser mp = new MangleParser(sample);
         assertTrue("We should not mangle a valid Java file", !mp.status());
+    }
+
+    @Test
+    public void parseStatements() throws ParseException, MangleException {
+        String statements = "a[0] = 1;" +
+                "b = 10;" +
+                "c = 'a';";
+
+        MangleParser mp = new MangleParser(statements);
+
     }
 }

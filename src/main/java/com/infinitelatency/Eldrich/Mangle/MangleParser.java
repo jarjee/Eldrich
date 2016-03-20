@@ -9,6 +9,8 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.rodionmoiseev.c10n.C10N;
+import com.infinitelatency.Eldrich.Mangle.Text.MangleParserMsg;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MangleParser {
-    public static String PACKAGE_ERR = "Packages cannot be used with mangled Java code";
-
     private boolean mangled;
     private final List<ImportDeclaration> imports = new ArrayList<>();
     private final List<Statement> statements = new ArrayList<>(); //Order is important here
@@ -28,6 +28,8 @@ public class MangleParser {
     private final List<MethodDeclaration> methods = new ArrayList<>();
     private final List<FieldDeclaration> fieldDeclarations = new ArrayList<>();
     private final List<ClassOrInterfaceDeclaration> structuralDecls = new ArrayList<>();
+
+    private MangleParserMsg msg = C10N.get(MangleParserMsg.class);
 
     public MangleParser(String program) throws ParseException, MangleException {
         InputStream stream = new ByteArrayInputStream(program.getBytes(StandardCharsets.UTF_8));
@@ -41,7 +43,7 @@ public class MangleParser {
                 retryParse(program);
             } catch (ParseException e1){
                 if (e1.getMessage().contains("package")){
-                    throw new MangleException(PACKAGE_ERR);
+                    throw new MangleException(msg.noPackages());
                 }
 
             }
@@ -69,9 +71,7 @@ public class MangleParser {
                     } else if (bd instanceof FieldDeclaration) {
                         fieldDeclarations.add((FieldDeclaration) bd);
                     } else {
-                        throw new MangleException(String.format("Body Declaration at LINE:%d, COL:%d was not recognised.\n" +
-                                        "This is very alpha, and I have missed a case",
-                                line, column));
+                        throw new MangleException(msg.absentBodyCase(line, column));
                     }
                     current = truncate(current, bd.getEndLine() - line, bd.getEndColumn());
                     line = bd.getEndLine();

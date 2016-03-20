@@ -13,5 +13,6 @@ dependencies {
     compile 'com.github.javaparser:javaparser-core:2.3.0'
     compile 'org.jetbrains:annotations:15.0'
     compile 'org.mdkt.compiler:InMemoryJavaCompiler:1.2'
+    compile group: 'com.github.rodionmoiseev.c10n', name: 'c10n-core', version: '1.2'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
