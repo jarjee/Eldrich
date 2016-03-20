@@ -1,10 +1,15 @@
 package com.infinitelatency.Eldrich.Mangle;
 
 import com.github.javaparser.ParseException;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.rodionmoiseev.c10n.C10N;
 import com.infinitelatency.Eldrich.Mangle.Text.MangleParserMsg;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -14,7 +19,7 @@ public class MangleParserTests {
     /**
      * Packages are flat out forbidden in the mangle parser.
      * The justification is that packages only make sense with a valid JAVA
-     * file. Using one with a irregular strucutre / multiple make no sense, so
+     * file. Using one with a irregular structure / multiple make no sense, so
      * we explicitly forbid them altogether.
      */
 
@@ -60,6 +65,16 @@ public class MangleParserTests {
                 "c = 'a';";
 
         MangleParser mp = new MangleParser(statements);
+        List<Statement> parsedStatements = mp.statements();
+        List<String> expressionStatements = new ArrayList<>();
+        expressionStatements.add("a[0] = 1;");
+        expressionStatements.add("b = 10;");
+        expressionStatements.add("c = 'a';");
 
+        assertTrue(parsedStatements.size() == expressionStatements.size());
+        for (int i = 0; i < parsedStatements.size(); i++){
+            assertTrue(parsedStatements.get(i) instanceof ExpressionStmt);
+            assertEquals(parsedStatements.get(i).toString(), expressionStatements.get(i));
+        }
     }
 }

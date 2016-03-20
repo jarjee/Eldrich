@@ -18,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MangleParser {
@@ -113,6 +114,10 @@ public class MangleParser {
 
     boolean status() {
         return mangled;
+    }
+
+    List<Statement> statements(){
+        return Collections.unmodifiableList(statements);
     }
 
 }
