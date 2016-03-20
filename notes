@@ -1,0 +1,71 @@
+Class parsing
+-------------
+
+Parse Compilation Unit first (if it's a valid java file)
+
+if that fails, we know it's a mangled java file:
+
+parse topmost level to lowermost level:
+- BodyDeclaration (methods / int a = 5 / inner classes);
+- BlockStatement (static { a = 5; } / { a = 5; })
+- Statement (a = 5;)
+
+On every success we need to 'consume' the program based off when the statement ends, and repeat.
+We will need to group these based off their types, which will then be used to template into the final program.
+
+
+Class templating
+----------------
+
+If we had to mangle the class, it should be structured as:
+
+NOTE: The HashMap method cannot deal decorators, such as final, static etc. Ideally, a structure which stores / runtime
+enforces these constraints would be ideal. This structure would also need to record the scope of the variables, since only
+globals need to be in the structure.
+
+The below is left as the hashmap method since that was what I originally started with
+
+class <GENERATED CLASS> {
+
+    //Public since the engine will eventually need to extract it after a run,
+    //final since nothing should overwrite it
+    //static purely since this needs to be shared across runs (according to ScriptEngine definition).
+    //Also has the advantage of being easy to use within static methods without too much fuss
+    public final static Hashmap<String, Object> <GENERATED VARIABLE STORE> = new HashMap<>();
+
+    <GENERATED CLASS> (Hashmap<String, Object> <GENERATED VARIABLE STORE>){ //Now entitled GVS for brevity
+
+        this.<GVS>.putAll(<GVS>);
+        //BodyDeclaration level declarations updated / inserted here
+        //<TYPE> a = <EXPR>; should become <GVS>.puts("a", (<TYPE>) <EXPR>); The type should be recorded for when we reference
+        //<PRIMITIVE> b; should become <GVS>.puts("b", (<PRIMITIVE>) 0); //Note, should default identical to actual java
+        //<OBJECT> c; should become <GVS>.puts("c", null); //Same behaviour for any object type
+
+        //Here should be every statement which we can successfully extract
+        //Note how we will need to track the types of 'global' variables for the duration of the rewrite
+        //a = <EXPR>; should become <GVS>.puts("a", (<TYPE a>) <EXPR>)
+        //b = <BINOP <EXPR> <a>>; should become
+            <GVS>.puts("b", (<TYPE b>) <BINOP <EXPR> ((<TYPE a>) <GVS>.get("b"))>
+
+        //In essence, every assignment becomes a <GVS>.puts(), reference a <GVS>.get()
+        //Every block statement should be extracted and included here
+        //Technically this means that all static blocks will get rewritten, but this can be solved by using a more
+        //complicated data store for variables
+    }
+
+    //Methods
+    int <EXTRACTED METHOD> (int a, int d){
+        return a + b + d;
+    }
+
+    //The above should be rewritten as the below.
+    //Note: We have to respect shadowing of global variables + correctly referencing them
+    //"a" and "b" are global variables in the current class
+
+    int <EXTRACTED METHOD> (int a, int d){
+        return a + ((<TYPE>) <GVS>.get(b)) + d;
+    }
+
+    //Inner classes will essentially need to have the above applied to them, while also being aware of shadowing.
+
+}
