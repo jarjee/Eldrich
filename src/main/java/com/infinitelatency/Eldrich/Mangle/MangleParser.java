@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MangleParser {
+    public static String PACKAGE_ERR = "Packages cannot be used with mangled Java code";
+
     private boolean mangled;
     private final List<ImportDeclaration> imports = new ArrayList<>();
     private final List<Statement> statements = new ArrayList<>(); //Order is important here
@@ -39,7 +41,7 @@ public class MangleParser {
                 retryParse(program);
             } catch (ParseException e1){
                 if (e1.getMessage().contains("package")){
-                    throw new MangleException("Packages cannot be used with mangled Java code");
+                    throw new MangleException(PACKAGE_ERR);
                 }
 
             }
