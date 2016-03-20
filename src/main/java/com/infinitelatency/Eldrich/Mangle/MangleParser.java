@@ -23,14 +23,13 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.rodionmoiseev.c10n.C10N;
 
 public class MangleParser {
-    private boolean mangled;
     private final List<ImportDeclaration> imports = new ArrayList<>();
     private final List<Statement> statements = new ArrayList<>(); //Order is important here
     private final List<MethodDeclaration> methodDeclarations = new ArrayList<>();
     private final List<FieldDeclaration> fieldDeclarations = new ArrayList<>();
     private final List<ClassOrInterfaceDeclaration> structuralDeclarations = new ArrayList<>();
-
     private final MangleParserMsg msg = C10N.get(MangleParserMsg.class);
+    private boolean mangled;
 
     public MangleParser(String program) throws MangleException {
         InputStream stream = new ByteArrayInputStream(program.getBytes(StandardCharsets.UTF_8));
@@ -42,8 +41,8 @@ public class MangleParser {
             mangled = true;
             try {
                 retryParse(program);
-            } catch (ParseException e1){
-                if (e1.getMessage().contains("package")){
+            } catch (ParseException e1) {
+                if (e1.getMessage().contains("package")) {
                     throw new MangleException(msg.noPackages());
                 }
             }
@@ -98,14 +97,14 @@ public class MangleParser {
     }
 
     @NotNull
-    private String truncate (@NotNull String s, final int lines, final int columns){
+    private String truncate(@NotNull String s, final int lines, final int columns) {
         return s.substring(charsToDrop(s, lines, columns));
     }
 
     @Contract(pure = true)
-    private int charsToDrop (@NotNull String s, final int lines, final int columns){
+    private int charsToDrop(@NotNull String s, final int lines, final int columns) {
         int result = 0;
-        for (int i = 0; i < lines; i++){
+        for (int i = 0; i < lines; i++) {
             result = s.contains("\n") ? result != 0 ? s.indexOf("\n", result) : s.indexOf("\n") : 0;
         }
         return result + columns;
@@ -115,11 +114,11 @@ public class MangleParser {
         return mangled;
     }
 
-    List<Statement> statements(){
+    List<Statement> statements() {
         return Collections.unmodifiableList(statements);
     }
 
-    List<ImportDeclaration> imports(){
+    List<ImportDeclaration> imports() {
         return Collections.unmodifiableList(imports);
     }
 

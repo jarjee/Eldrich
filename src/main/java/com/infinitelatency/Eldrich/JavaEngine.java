@@ -2,7 +2,7 @@
 package com.infinitelatency.Eldrich;
 
 import java.io.Reader;
-import java.util.*;
+import java.util.HashMap;
 
 import javax.script.*;
 
@@ -10,9 +10,9 @@ public class JavaEngine extends AbstractScriptEngine implements Compilable, Invo
 
     private final JavaEngineFactory jef;
     private final Bindings binds = createBindings();
-    private final HashMap<Function,Class<?>> functions = new HashMap<>();
+    private final HashMap<Function, Class<?>> functions = new HashMap<>();
 
-    public JavaEngine(JavaEngineFactory jef){
+    public JavaEngine(JavaEngineFactory jef) {
         this.jef = jef;
     }
 

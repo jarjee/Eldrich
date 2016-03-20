@@ -112,7 +112,7 @@ class JavaEngineFactory implements ScriptEngineFactory {
         sb.append(classname);
         sb.append(" implements Runnable {\n");
         sb.append("   public void run() {\n");
-        for (String s: strings) {
+        for (String s : strings) {
             sb.append(String.format("      %s\n", s));
         }
         sb.append("   }\n");
@@ -122,7 +122,7 @@ class JavaEngineFactory implements ScriptEngineFactory {
 
     private String generateClassname() {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             sb.append(symbols[random.nextInt(symbols.length)]);
         }
         return sb.toString();

@@ -8,7 +8,7 @@ class NodeTuple {
     final String contents;
     final Class<?> type;
 
-    NodeTuple(@NotNull String contents, @NotNull Class<?> type){
+    NodeTuple(@NotNull String contents, @NotNull Class<?> type) {
         this.contents = contents;
         this.type = type;
     }

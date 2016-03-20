@@ -24,7 +24,7 @@ public class MangleParserTests {
      */
 
     @Test
-    public void noPackages(){
+    public void noPackages() {
         String s = "package com.test.packagename;\n" +
                 "int a = 10;";
         try {
@@ -43,7 +43,7 @@ public class MangleParserTests {
     public void validProgramNoMangle() throws ParseException, MangleException {
         String sample = "class D {\n" +
                 "               private int value;\n" +
-                "               private int test = 10;"+
+                "               private int test = 10;" +
                 "                       public D() {\n" +
                 "                          value = 5;\n" +
                 "                       }\n" +
@@ -73,7 +73,7 @@ public class MangleParserTests {
         expressionStatements.add(new NodeTuple("{\n    d = 5;\n}", BlockStmt.class));
 
         assertTrue(parsedStatements.size() == expressionStatements.size());
-        for (int i = 0; i < parsedStatements.size(); i++){
+        for (int i = 0; i < parsedStatements.size(); i++) {
             assertEquals(parsedStatements.get(i).getClass(), expressionStatements.get(i).type);
             assertEquals(parsedStatements.get(i).toString(), expressionStatements.get(i).contents);
         }
