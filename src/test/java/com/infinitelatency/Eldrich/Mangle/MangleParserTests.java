@@ -28,4 +28,25 @@ public class MangleParserTests {
             assertEquals(e.getMessage(), MangleParser.PACKAGE_ERR);
         }
     }
+
+
+    /**
+     * A valid program should not be mangled by the parser.
+     */
+    @Test
+    public void validProgramNoMangle() throws ParseException, MangleException {
+        String sample = "class D {\n" +
+                "               private int value;\n" +
+                "               private int test = 10;"+
+                "                       public D() {\n" +
+                "                          value = 5;\n" +
+                "                       }\n" +
+                "                       public void test(int derp) {\n" +
+                "                          System.out.println(value + test + derp);\n" +
+                "                       }\n" +
+                "                    }";
+
+        MangleParser mp = new MangleParser(sample);
+        assertTrue("We should not mangle a valid Java file", !mp.status());
+    }
 }
