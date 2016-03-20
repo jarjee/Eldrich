@@ -1,8 +1,10 @@
+/* Licensed under Apache-2.0 */
 package com.infinitelatency.Eldrich;
 
-import javax.script.*;
 import java.io.Reader;
 import java.util.*;
+
+import javax.script.*;
 
 public class JavaEngine extends AbstractScriptEngine implements Compilable, Invocable, AutoCloseable {
 

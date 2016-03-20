@@ -1,3 +1,4 @@
+/* Licensed under Apache-2.0 */
 package com.infinitelatency.Eldrich.Mangle;
 
 import com.github.rodionmoiseev.c10n.annotations.En;

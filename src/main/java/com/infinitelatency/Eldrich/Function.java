@@ -1,9 +1,10 @@
+/* Licensed under Apache-2.0 */
 package com.infinitelatency.Eldrich;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 class Function {
     private final String name;
