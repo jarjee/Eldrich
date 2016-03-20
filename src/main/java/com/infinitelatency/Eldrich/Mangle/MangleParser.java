@@ -24,10 +24,9 @@ public class MangleParser {
     private boolean mangled;
     private final List<ImportDeclaration> imports = new ArrayList<>();
     private final List<Statement> statements = new ArrayList<>(); //Order is important here
-    private final List<BlockStmt> blocks = new ArrayList<>();
-    private final List<MethodDeclaration> methods = new ArrayList<>();
+    private final List<MethodDeclaration> methodDeclarations = new ArrayList<>();
     private final List<FieldDeclaration> fieldDeclarations = new ArrayList<>();
-    private final List<ClassOrInterfaceDeclaration> structuralDecls = new ArrayList<>();
+    private final List<ClassOrInterfaceDeclaration> structuralDeclarations = new ArrayList<>();
 
     private final MangleParserMsg msg = C10N.get(MangleParserMsg.class);
 
@@ -64,9 +63,9 @@ public class MangleParser {
                     //BodyDeclaration actually has quite a few parse options, so will need to be done properly
                     BodyDeclaration bd = JavaParser.parseBodyDeclaration(current);
                     if (bd instanceof ClassOrInterfaceDeclaration) {
-                        structuralDecls.add((ClassOrInterfaceDeclaration) bd);
+                        structuralDeclarations.add((ClassOrInterfaceDeclaration) bd);
                     } else if (bd instanceof MethodDeclaration) {
-                        methods.add((MethodDeclaration) bd);
+                        methodDeclarations.add((MethodDeclaration) bd);
                     } else if (bd instanceof FieldDeclaration) {
                         fieldDeclarations.add((FieldDeclaration) bd);
                     } else {
@@ -79,7 +78,7 @@ public class MangleParser {
                     //Now we try to parse blocks
                     try {
                         BlockStmt bs = JavaParser.parseBlock(current);
-                        blocks.add(bs);
+                        statements.add(bs);
                         current = truncate(current, bs.getEndLine() - line, bs.getEndColumn());
                         line = bs.getEndLine();
                         column = bs.getEndColumn();
@@ -117,5 +116,22 @@ public class MangleParser {
     List<Statement> statements(){
         return Collections.unmodifiableList(statements);
     }
+
+    List<ImportDeclaration> imports(){
+        return Collections.unmodifiableList(imports);
+    }
+
+    List<FieldDeclaration> fields() {
+        return Collections.unmodifiableList(fieldDeclarations);
+    }
+
+    List<MethodDeclaration> methods() {
+        return Collections.unmodifiableList(methodDeclarations);
+    }
+
+    List<ClassOrInterfaceDeclaration> structuralDeclarations() {
+        return Collections.unmodifiableList(structuralDeclarations);
+    }
+
 
 }

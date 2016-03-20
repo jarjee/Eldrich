@@ -1,9 +1,11 @@
 package com.infinitelatency.Eldrich.Mangle;
 
 import com.github.javaparser.ParseException;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.rodionmoiseev.c10n.C10N;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -58,19 +60,22 @@ public class MangleParserTests {
     public void parseStatements() throws ParseException, MangleException {
         String statements = "a[0] = 1;" +
                 "b = 10;" +
-                "c = 'a';";
+                "c = 'a';" +
+                "{ d = 5; }";
 
         MangleParser mp = new MangleParser(statements);
         List<Statement> parsedStatements = mp.statements();
-        List<String> expressionStatements = new ArrayList<>();
-        expressionStatements.add("a[0] = 1;");
-        expressionStatements.add("b = 10;");
-        expressionStatements.add("c = 'a';");
+
+        List<NodeTuple> expressionStatements = new ArrayList<>();
+        expressionStatements.add(new NodeTuple("a[0] = 1;", ExpressionStmt.class));
+        expressionStatements.add(new NodeTuple("b = 10;", ExpressionStmt.class));
+        expressionStatements.add(new NodeTuple("c = 'a';", ExpressionStmt.class));
+        expressionStatements.add(new NodeTuple("{\n    d = 5;\n}", BlockStmt.class));
 
         assertTrue(parsedStatements.size() == expressionStatements.size());
         for (int i = 0; i < parsedStatements.size(); i++){
-            assertTrue(parsedStatements.get(i) instanceof ExpressionStmt);
-            assertEquals(parsedStatements.get(i).toString(), expressionStatements.get(i));
+            assertEquals(parsedStatements.get(i).getClass(), expressionStatements.get(i).type);
+            assertEquals(parsedStatements.get(i).toString(), expressionStatements.get(i).contents);
         }
     }
 }
