@@ -36,14 +36,14 @@ compileJava {
 spotless {
     freshmark {
         trimTrailingWhitespace()
-        indentWithSpaces(3)
+        indentWithSpaces(4)
         endWithNewline()
     }
     java {
         licenseHeader '/* Licensed under Apache-2.0 */' // License header
         importOrder(['java', 'javax', 'org', 'com'])
-        eclipseFormatFile rootProject.file('src/eclipse/eclipse-java-google-style.xml')
-        indentWithSpaces(3)
+        //eclipseFormatFile rootProject.file('src/eclipse/eclipse-java-google-style.xml')
+        indentWithSpaces(4)
         trimTrailingWhitespace()
     }
 }
