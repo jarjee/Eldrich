@@ -29,8 +29,6 @@ public class MangleParserTests {
                 "int a = 10;";
         try {
             MangleParser mp = new MangleParser(s);
-        } catch (ParseException e) {
-            fail("We should only see a MangleException");
         } catch (MangleException e) {
             MangleParserMsg msg = C10N.get(MangleParserMsg.class);
             assertEquals(e.getMessage(), msg.noPackages());

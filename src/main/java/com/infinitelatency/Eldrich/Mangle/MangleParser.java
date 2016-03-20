@@ -30,9 +30,9 @@ public class MangleParser {
     private final List<FieldDeclaration> fieldDeclarations = new ArrayList<>();
     private final List<ClassOrInterfaceDeclaration> structuralDecls = new ArrayList<>();
 
-    private MangleParserMsg msg = C10N.get(MangleParserMsg.class);
+    private final MangleParserMsg msg = C10N.get(MangleParserMsg.class);
 
-    public MangleParser(String program) throws ParseException, MangleException {
+    public MangleParser(String program) throws MangleException {
         InputStream stream = new ByteArrayInputStream(program.getBytes(StandardCharsets.UTF_8));
         try {
             JavaParser.parse(stream);  //If we can parse the entire thing in one go, it's a valid JAVA file
