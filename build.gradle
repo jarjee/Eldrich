@@ -42,7 +42,7 @@ spotless {
     java {
         licenseHeader '/* Licensed under Apache-2.0 */' // License header
         importOrder(['java', 'javax', 'org', 'com'])
-        //eclipseFormatFile rootProject.file('src/eclipse/eclipse-java-google-style.xml')
+        eclipseFormatFile rootProject.file('src/eclipse/eclipse-java-google-style.xml')
         indentWithSpaces(4)
         trimTrailingWhitespace()
     }
